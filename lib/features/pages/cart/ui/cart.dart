@@ -2,7 +2,9 @@ import 'package:cart_adding_app/features/pages/cart/bloc/cart_bloc.dart';
 import 'package:cart_adding_app/features/pages/cart/ui/cart_tile_widget.dart';
 import 'package:cart_adding_app/features/util/util.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class Cart extends StatefulWidget {
@@ -51,14 +53,36 @@ class _CartState extends State<Cart> {
             // Success
             case CartSuccessState:
               final successState = state as CartSuccessState;
-              return ListView.builder(
-                itemCount: successState.cartItems.length,
-                itemBuilder: (context, index) {
-                  return CartTileWidget(
-                      productDataModel: successState.cartItems[index],
-                      cartBloc: cartBloc);
-                },
-              );
+              return AnimationLimiter(
+                child: ListView.builder(
+                  physics: const BouncingScrollPhysics(),
+                  addAutomaticKeepAlives: false,
+                  addRepaintBoundaries: false,
+                  addSemanticIndexes: false,
+                  shrinkWrap: false,
+                  itemCount: successState.cartItems.length,
+                  itemBuilder: (context, index) {
+                    return AnimationConfiguration.staggeredList(
+                      position: index,
+                      delay: const Duration(milliseconds: 100),
+                      child: SlideAnimation(
+                        horizontalOffset: 30,
+                        verticalOffset: 300,
+                        duration: const Duration(milliseconds: 2500),
+                        curve: Curves.fastLinearToSlowEaseIn,
+                        child: FlipAnimation(
+                          duration: const Duration(milliseconds: 3000),
+                          curve: Curves.fastLinearToSlowEaseIn,
+                          flipAxis: FlipAxis.y,
+                          child: CartTileWidget(
+                              productDataModel: successState.cartItems[index],
+                              cartBloc: cartBloc),
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ).animate(delay: const Duration(seconds: 2)).shimmer();
 
             // Error
             case CartErrorState:

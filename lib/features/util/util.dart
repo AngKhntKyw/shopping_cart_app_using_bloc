@@ -5,8 +5,17 @@ import 'package:page_transition/page_transition.dart';
 
 class Util {
   static void showMessage(BuildContext context, String message) {
-    ScaffoldMessenger.of(context)
-        .showSnackBar(SnackBar(content: Text(message)));
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        duration: const Duration(milliseconds: 200),
+        animation: const AlwaysStoppedAnimation(1),
+        elevation: 0,
+        behavior: SnackBarBehavior.fixed,
+        padding: const EdgeInsets.all(15),
+        dismissDirection: DismissDirection.down,
+      ),
+    );
   }
 
   static Widget cacheNetworkImage(String imageUrl) {

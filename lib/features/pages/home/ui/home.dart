@@ -94,11 +94,11 @@ class _HomeState extends State<Home> {
               body: AnimationLimiter(
                 child: ListView.builder(
                   physics: const BouncingScrollPhysics(),
-                  itemCount: successState.products.length,
                   addAutomaticKeepAlives: false,
                   addRepaintBoundaries: false,
                   addSemanticIndexes: false,
                   shrinkWrap: false,
+                  itemCount: successState.products.length,
                   itemBuilder: (BuildContext context, int index) {
                     final isAddedIntoCart =
                         cartItems.contains(successState.products[index]);

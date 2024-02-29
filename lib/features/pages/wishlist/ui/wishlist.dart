@@ -2,7 +2,9 @@ import 'package:cart_adding_app/features/pages/wishlist/bloc/wishlist_bloc.dart'
 import 'package:cart_adding_app/features/pages/wishlist/ui/wishlist_tile_widgete.dart';
 import 'package:cart_adding_app/features/util/util.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class Wishlist extends StatefulWidget {
@@ -51,14 +53,32 @@ class _WishlistState extends State<Wishlist> {
             // Success
             case WishlistSuccessState:
               final wishListSuccess = state as WishlistSuccessState;
-              return ListView.builder(
-                itemCount: wishListSuccess.wishlistItems.length,
-                itemBuilder: (context, index) {
-                  return WishlistTileWidget(
-                      productDataModel: wishListSuccess.wishlistItems[index],
-                      wishlistBloc: wishlistBloc);
-                },
-              );
+              return AnimationLimiter(
+                child: ListView.builder(
+                  itemCount: wishListSuccess.wishlistItems.length,
+                  itemBuilder: (context, index) {
+                    return AnimationConfiguration.staggeredList(
+                      position: index,
+                      delay: const Duration(milliseconds: 100),
+                      child: SlideAnimation(
+                        horizontalOffset: 30,
+                        verticalOffset: 300,
+                        duration: const Duration(milliseconds: 2500),
+                        curve: Curves.fastLinearToSlowEaseIn,
+                        child: FlipAnimation(
+                          duration: const Duration(milliseconds: 3000),
+                          curve: Curves.fastLinearToSlowEaseIn,
+                          flipAxis: FlipAxis.y,
+                          child: WishlistTileWidget(
+                              productDataModel:
+                                  wishListSuccess.wishlistItems[index],
+                              wishlistBloc: wishlistBloc),
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ).animate(delay: const Duration(seconds: 2)).shimmer();
 
             // Error
             case WishlistErrorState:

@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:cart_adding_app/data/wishlist_items.dart';
 import 'package:cart_adding_app/features/pages/home/models/home_data_product_model.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:meta/meta.dart';
 part 'wishlist_event.dart';
 part 'wishlist_state.dart';

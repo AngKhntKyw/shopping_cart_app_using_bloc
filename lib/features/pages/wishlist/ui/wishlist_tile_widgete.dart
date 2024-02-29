@@ -27,7 +27,7 @@ class WishlistTileWidget extends StatelessWidget {
             productDataModel.name,
             style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           ),
-          Text(productDataModel.description),
+          Text(productDataModel.description.split('.')[0]),
           const SizedBox(height: 20),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
